@@ -19,16 +19,29 @@ export default function PatientMonitor() {
 
   // Simular mudanças nos sinais vitais a cada 3 segundos
   useEffect(() => {
-    const interval = setInterval(() => {
-      setVitals({
-        spo2: getRandomValue(94, 100),
-        bpm: getRandomValue(60, 100),
-        temperature: Number((getRandomValue(360, 375) / 10).toFixed(1)),
-      })
-    }, 3000)
+    const fetchVitals = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/vitals`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch vitals");
+        }
+        const data = await response.json();
+        console.log('data', data[0])
+        setVitals({
+          spo2: data[0].spo2,
+          bpm: data[0].bpm,
+          temperature: data[0].temperature,
+        });
+      } catch (error) {
+        console.error("Error fetching vitals:", error);
+      }
+    };
 
-    return () => clearInterval(interval)
-  }, [])
+    fetchVitals();
+    const interval = setInterval(fetchVitals, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Função para determinar a cor baseada no valor
   const getStatusColor = (type: string, value: number) => {
