@@ -1,12 +1,14 @@
-import PatientMonitor from "@/components/patient-monitor"
+import { redirect } from "next/navigation"
+import DoctorDashboard from "@/components/doctor-dashboard"
 
 export default function Home() {
-  return (
-    <main className="min-h-screen p-4 md:p-8 bg-gray-50">
-      <div className="max-w-5xl mx-auto">
-        <h1 className="text-2xl md:text-3xl font-bold mb-6">Monitoramento de Paciente</h1>
-        <PatientMonitor />
-      </div>
-    </main>
-  )
+  // Na versão completa, verificaríamos a autenticação aqui
+  // Se não estiver autenticado, redirecionaria para login
+  const isAuthenticated = true
+
+  if (!isAuthenticated) {
+    redirect("/login")
+  }
+
+  return <DoctorDashboard />
 }
