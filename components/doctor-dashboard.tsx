@@ -19,8 +19,8 @@ import {
 // Dados simulados do médico
 const doctorData = {
   id: 1,
-  name: "Dr. Augusto Silva",
-  email: "ana.silva@hospital.com",
+  name: "Dr. Augusto camati",
+  email: "augustocamati@hospital.com",
   specialty: "Cardiologia",
   avatar: "/placeholder.svg?height=40&width=40",
 }
