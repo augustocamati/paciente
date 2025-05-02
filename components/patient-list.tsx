@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -8,71 +8,91 @@ import { Badge } from "@/components/ui/badge"
 import { Search, Plus } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
-
-// Dados simulados de pacientes
-const patientsData = [
-  {
-    id: 1,
-    name: "João Silva",
-    age: 65,
-    gender: "Masculino",
-    room: "101",
-    status: "critical",
-    medicalRecord: "12345",
-  },
-  {
-    id: 2,
-    name: "Maria Oliveira",
-    age: 42,
-    gender: "Feminino",
-    room: "102",
-    status: "stable",
-    medicalRecord: "12346",
-  },
-  {
-    id: 3,
-    name: "Pedro Santos",
-    age: 58,
-    gender: "Masculino",
-    room: "103",
-    status: "warning",
-    medicalRecord: "12347",
-  },
-  {
-    id: 4,
-    name: "Ana Costa",
-    age: 35,
-    gender: "Feminino",
-    room: "104",
-    status: "stable",
-    medicalRecord: "12348",
-  },
-  {
-    id: 5,
-    name: "Carlos Ferreira",
-    age: 70,
-    gender: "Masculino",
-    room: "105",
-    status: "stable",
-    medicalRecord: "12349",
-  },
-]
+import { randomInt } from "crypto"
 
 interface PatientListProps {
   onSelectPatient: (patient: any) => void
   selectedPatientId?: number
 }
 
-export default function PatientList({ onSelectPatient, selectedPatientId }: PatientListProps) {
+export default function PatientList({
+  onSelectPatient,
+  selectedPatientId,
+}: PatientListProps) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002"
+  
   const [searchTerm, setSearchTerm] = useState("")
+  const [patients, setPatients] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+  const [isCreating, setIsCreating] = useState(false)
+  const [newPatient, setNewPatient] = useState({
+    name: "",
+    age: "",
+    gender: "MALE",
+    room: "",
+    medicalRecord: "",
+  })
+   
 
-  const filteredPatients = patientsData.filter(
+  
+
+  useEffect(() => {
+    const fetchPatients = async () => {
+      try {
+         const response = await fetch(`${API_URL}/patients`)
+        if (!response.ok) throw new Error("Erro ao carregar pacientes")
+        const data = await response.json()
+        setPatients(data)
+      } catch (err) {
+        setError("Falha ao buscar pacientes")
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchPatients()
+  }, [])
+
+  const handleCreatePatient = async () => {
+    try {
+     const response = await fetch(`${API_URL}/patients`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...newPatient,
+          age: parseInt(newPatient.age),
+          status: "STABLE",
+    
+          doctorId: 2, // ID do médico associado (ajuste conforme necessário)
+        }),
+      })
+console.log('response', response)
+      if (!response.ok) throw new Error("Erro ao criar paciente")
+      const result = await response.json()
+      setPatients([...patients, result])
+      setIsCreating(false)
+      setNewPatient({
+        name: "",
+        age: "",
+        gender: "",
+        room: "",
+        medicalRecord: "",
+      })
+    } catch (error) {
+      console.error("Erro:", error)
+    }
+  }
+
+  const filteredPatients = patients.filter(
     (patient) =>
-      patient.name.toLowerCase().includes(searchTerm.toLowerCase()) || patient.medicalRecord.includes(searchTerm),
+      patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      patient.medicalRecord.includes(searchTerm)
   )
 
   const getStatusColor = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case "critical":
         return "bg-red-500 hover:bg-red-600"
       case "warning":
@@ -85,7 +105,7 @@ export default function PatientList({ onSelectPatient, selectedPatientId }: Pati
   }
 
   const getStatusText = (status: string) => {
-    switch (status) {
+    switch (status.toLowerCase()) {
       case "critical":
         return "Crítico"
       case "warning":
@@ -97,18 +117,78 @@ export default function PatientList({ onSelectPatient, selectedPatientId }: Pati
     }
   }
 
+  if (loading)
+    return (
+      <div className="p-4 text-muted-foreground">Carregando pacientes...</div>
+    )
+  if (error) return <div className="p-4 text-red-500">{error}</div>
+
   return (
     <Card className="h-full">
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
           <CardTitle>Pacientes</CardTitle>
-          <Button size="sm" variant="outline">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setIsCreating(!isCreating)}
+          >
             <Plus className="h-4 w-4 mr-1" />
             Novo
           </Button>
         </div>
       </CardHeader>
+
       <CardContent>
+        {isCreating && (
+          <div className="mb-4 space-y-2 p-2 bg-gray-50 rounded-lg">
+            <Input
+              placeholder="Nome completo"
+              value={newPatient.name}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, name: e.target.value })
+              }
+            />
+            <Input
+              placeholder="Idade"
+              type="number"
+              value={newPatient.age}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, age: e.target.value })
+              }
+            />
+           
+            <select
+              className="w-full px-3 py-2 border rounded-md"
+              value={newPatient.gender}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, gender: e.target.value })
+              }
+            >
+              <option value="MALE">Masculino</option>
+              <option value="FEMALE">Feminino</option>
+              
+            </select>
+            <Input
+              placeholder="Quarto"
+              value={newPatient.room}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, room: e.target.value })
+              }
+            />
+            <Input
+              placeholder="Prontuário"
+              value={newPatient.medicalRecord}
+              onChange={(e) =>
+                setNewPatient({ ...newPatient, medicalRecord: e.target.value })
+              }
+            />
+            <Button className="w-full" onClick={handleCreatePatient}>
+              Cadastrar Paciente
+            </Button>
+          </div>
+        )}
+
         <div className="relative mb-4">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input
@@ -144,14 +224,18 @@ export default function PatientList({ onSelectPatient, selectedPatientId }: Pati
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <p className="font-medium truncate">{patient.name}</p>
-                      <Badge className={getStatusColor(patient.status)}>{getStatusText(patient.status)}</Badge>
+                      {/* <Badge className={getStatusColor(patient.status)}>
+                        {getStatusText(patient.status)}
+                      </Badge> */}
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground mt-1">
                       <span className="truncate">
                         {patient.age} anos • Quarto {patient.room}
                       </span>
                     </div>
-                    <div className="text-xs text-muted-foreground mt-1">Prontuário: {patient.medicalRecord}</div>
+                    <div className="text-xs text-muted-foreground mt-1">
+                      Prontuário: {patient.medicalRecord}
+                    </div>
                   </div>
                 </div>
               </div>
