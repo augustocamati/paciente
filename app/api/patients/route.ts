@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { db } from "@/lib/db"
 import { verify } from "jsonwebtoken"
-import { hash } from "bcrypt"
+import { hash } from "bcryptjs"
 
 // Função para verificar o token e extrair o ID do médico
 function getDoctorIdFromToken(authHeader: string | null) {

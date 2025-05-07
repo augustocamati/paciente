@@ -59,12 +59,12 @@
     "vaul": "^0.9.6",
     "zod": "^3.24.1",
     "pg-native": "latest",
-    "bcryptjs": "latest",
-    "jsonwebtoken": "latest",
     "pg": "latest",
+    "jsonwebtoken": "latest",
     "http": "latest",
     "socket.io": "latest",
-    "socket.io-client": "latest"
+    "socket.io-client": "latest",
+    "bcryptjs": "latest"
   },
   "devDependencies": {
     "@types/node": "^22",

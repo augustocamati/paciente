@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
-import { compare } from "bcrypt"
+// Substituir a importação do bcrypt por bcryptjs
+import { compare } from "bcryptjs"
 import { sign } from "jsonwebtoken"
 import { db } from "@/lib/db"
 
