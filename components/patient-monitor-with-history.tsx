@@ -14,17 +14,18 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import ThresholdSettings from "@/components/threshold-settings"
+import VitalSignsChart from "@/components/vital-signs-chart"
 
 // Função para gerar valores aleatórios dentro de um intervalo
 const getRandomValue = (min: number, max: number) => {
   return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-interface PatientMonitorProps {
+interface PatientMonitorWithHistoryProps {
   patient: any
 }
 
-export default function PatientMonitor({ patient }: PatientMonitorProps) {
+export default function PatientMonitorWithHistory({ patient }: PatientMonitorWithHistoryProps) {
   // Estado inicial para os sinais vitais
   const [vitals, setVitals] = useState({
     spo2: 98,
@@ -58,10 +59,32 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
         bpm: newBpm,
         temperature: newTemp,
       })
+
+      // Enviar dados para a API (em produção, isso viria de dispositivos reais)
+      sendVitalData(newSpo2, newBpm, newTemp)
     }, 3000)
 
     return () => clearInterval(interval)
   }, [patient])
+
+  // Função para enviar dados de sinais vitais para a API
+  const sendVitalData = async (spo2: number, bpm: number, temperature: number) => {
+    try {
+      const token = localStorage.getItem("authToken")
+      if (!token) return
+
+      await fetch(`/api/patients/${patient.id}/vitals`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ spo2, bpm, temperature }),
+      })
+    } catch (error) {
+      console.error("Erro ao enviar dados vitais:", error)
+    }
+  }
 
   // Função para determinar a cor baseada no valor e nos limites
   const getStatusColor = (type: string, value: number) => {
@@ -279,13 +302,17 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
         </TabsContent>
 
         <TabsContent value="history">
-          <Card>
-            <CardContent className="pt-6">
-              <div className="h-64 flex items-center justify-center">
-                <p className="text-muted-foreground">Histórico de sinais vitais será exibido aqui</p>
-              </div>
-            </CardContent>
-          </Card>
+          {patient && patient.id ? (
+            <VitalSignsChart patientId={patient.id} />
+          ) : (
+            <Card>
+              <CardContent className="pt-6">
+                <div className="h-64 flex items-center justify-center">
+                  <p className="text-muted-foreground">Selecione um paciente para visualizar o histórico</p>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
     </div>

@@ -4,7 +4,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
-import { DialogFooter, DialogTrigger } from "@/components/ui/dialog"
+import { DialogFooter } from "@/components/ui/dialog"
 import { Slider } from "@/components/ui/slider"
 
 interface ThresholdSettingsProps {
@@ -36,12 +36,8 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
       {/* SPO2 Settings */}
       <div className="space-y-4">
         <div>
-          <Label className="text-base font-medium">
-            Saturação de Oxigênio (SPO2)
-          </Label>
-          <p className="text-sm text-muted-foreground">
-            Valores normais: 95-100%
-          </p>
+          <Label className="text-base font-medium">Saturação de Oxigênio (SPO2)</Label>
+          <p className="text-sm text-muted-foreground">Valores normais: 95-100%</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -61,9 +57,7 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 id="spo2-min-input"
                 className="w-16"
                 value={newThresholds.spo2.min}
-                onChange={(e) =>
-                  handleChange("spo2", "min", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("spo2", "min", Number(e.target.value))}
                 min={85}
                 max={100}
               />
@@ -86,9 +80,7 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 id="spo2-max-input"
                 className="w-16"
                 value={newThresholds.spo2.max}
-                onChange={(e) =>
-                  handleChange("spo2", "max", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("spo2", "max", Number(e.target.value))}
                 min={90}
                 max={100}
               />
@@ -100,12 +92,8 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
       {/* BPM Settings */}
       <div className="space-y-4">
         <div>
-          <Label className="text-base font-medium">
-            Frequência Cardíaca (BPM)
-          </Label>
-          <p className="text-sm text-muted-foreground">
-            Valores normais: 60-100 BPM
-          </p>
+          <Label className="text-base font-medium">Frequência Cardíaca (BPM)</Label>
+          <p className="text-sm text-muted-foreground">Valores normais: 60-100 BPM</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -125,9 +113,7 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 id="bpm-min-input"
                 className="w-16"
                 value={newThresholds.bpm.min}
-                onChange={(e) =>
-                  handleChange("bpm", "min", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("bpm", "min", Number(e.target.value))}
                 min={40}
                 max={100}
               />
@@ -150,9 +136,7 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 id="bpm-max-input"
                 className="w-16"
                 value={newThresholds.bpm.max}
-                onChange={(e) =>
-                  handleChange("bpm", "max", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("bpm", "max", Number(e.target.value))}
                 min={60}
                 max={200}
               />
@@ -165,9 +149,7 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
       <div className="space-y-4">
         <div>
           <Label className="text-base font-medium">Temperatura</Label>
-          <p className="text-sm text-muted-foreground">
-            Valores normais: 36.0-37.5 °C
-          </p>
+          <p className="text-sm text-muted-foreground">Valores normais: 36.0-37.5 °C</p>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
@@ -180,18 +162,14 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 max={37.0}
                 step={0.1}
                 value={[newThresholds.temperature.min]}
-                onValueChange={(value) =>
-                  handleChange("temperature", "min", value)
-                }
+                onValueChange={(value) => handleChange("temperature", "min", value)}
               />
               <Input
                 type="number"
                 id="temp-min-input"
                 className="w-16"
                 value={newThresholds.temperature.min}
-                onChange={(e) =>
-                  handleChange("temperature", "min", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("temperature", "min", Number(e.target.value))}
                 min={35.0}
                 max={37.0}
                 step={0.1}
@@ -208,18 +186,14 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
                 max={40.0}
                 step={0.1}
                 value={[newThresholds.temperature.max]}
-                onValueChange={(value) =>
-                  handleChange("temperature", "max", value)
-                }
+                onValueChange={(value) => handleChange("temperature", "max", value)}
               />
               <Input
                 type="number"
                 id="temp-max-input"
                 className="w-16"
                 value={newThresholds.temperature.max}
-                onChange={(e) =>
-                  handleChange("temperature", "max", Number(e.target.value))
-                }
+                onChange={(e) => handleChange("temperature", "max", Number(e.target.value))}
                 min={37.0}
                 max={40.0}
                 step={0.1}
@@ -230,20 +204,10 @@ export default function ThresholdSettings({ thresholds, onSave }: ThresholdSetti
       </div>
 
       <DialogFooter>
-       
-          <DialogTrigger asChild>
-            <Button variant="outline" >Cancelar</Button>
-          </DialogTrigger>
-       
-        <Button
-          variant="outline"
-          onClick={() => setNewThresholds({ ...thresholds })}
-        >
-          Repor
+        <Button variant="outline" onClick={() => setNewThresholds({ ...thresholds })}>
+          Cancelar
         </Button>
-        <Button onClick={() => onSave(newThresholds)}>
-          Salvar Configurações
-        </Button>
+        <Button onClick={() => onSave(newThresholds)}>Salvar Configurações</Button>
       </DialogFooter>
     </div>
   )
