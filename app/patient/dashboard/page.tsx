@@ -84,7 +84,7 @@ export default function PatientDashboard() {
           ? "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200"
           : value < 90
             ? "bg-gradient-to-br from-red-50 to-red-100 border-red-200"
-            : "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200"
+            : "bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200"
       case "bpm":
         return value < thresholds.bpm.min
           ? "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200"
@@ -103,11 +103,11 @@ export default function PatientDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-indigo-100">
       <header className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+            <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
               MC
             </div>
             <h1 className="text-xl font-bold text-gray-800">MediCare</h1>
@@ -122,7 +122,7 @@ export default function PatientDashboard() {
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-10 w-10 rounded-full">
                   <Avatar>
-                    <AvatarFallback className="bg-blue-200 text-blue-700">
+                    <AvatarFallback className="bg-emerald-200 text-emerald-700">
                       {patientData.name
                         .split(" ")
                         .map((n) => n[0])
@@ -184,7 +184,7 @@ export default function PatientDashboard() {
               <CardContent className="space-y-4">
                 <div className="flex flex-col items-center">
                   <Avatar className="h-24 w-24 mb-4">
-                    <AvatarFallback className="text-2xl bg-blue-200 text-blue-700">
+                    <AvatarFallback className="text-2xl bg-emerald-200 text-emerald-700">
                       {patientData.name
                         .split(" ")
                         .map((n) => n[0])
@@ -250,7 +250,7 @@ export default function PatientDashboard() {
                     <CardHeader className="flex flex-row items-center justify-between pb-2">
                       <CardTitle className="text-lg font-medium text-gray-800">Saturação de Oxigênio</CardTitle>
                       <div className="p-2 bg-white rounded-full shadow-sm">
-                        <Droplet className="h-5 w-5 text-blue-600" />
+                        <Droplet className="h-5 w-5 text-emerald-600" />
                       </div>
                     </CardHeader>
                     <CardContent>

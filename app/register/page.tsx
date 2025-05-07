@@ -24,7 +24,7 @@ export default function RegisterPage() {
     crm: "",
     password: "",
     confirmPassword: "",
-    terms: false,
+    
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,15 +50,6 @@ export default function RegisterPage() {
       toast({
         title: "Erro de validação",
         description: "As senhas não coincidem",
-        variant: "destructive",
-      })
-      return
-    }
-
-    if (!formData.terms) {
-      toast({
-        title: "Erro de validação",
-        description: "Você precisa aceitar os termos de serviço",
         variant: "destructive",
       })
       return
@@ -108,9 +99,9 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-indigo-100 flex flex-col">
       <div className="container mx-auto px-4 py-4">
-        <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+        <Link href="/" className="inline-flex items-center text-emerald-600 hover:text-emerald-800 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Voltar para a página inicial
         </Link>
@@ -120,7 +111,7 @@ export default function RegisterPage() {
         <Card className="w-full max-w-lg">
           <CardHeader className="space-y-1 text-center">
             <div className="flex justify-center mb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+              <div className="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
                 MC
               </div>
             </div>
@@ -195,24 +186,7 @@ export default function RegisterPage() {
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox
-                    id="terms"
-                    required
-                    checked={formData.terms}
-                    onCheckedChange={(checked) => setFormData((prev) => ({ ...prev, terms: checked === true }))}
-                  />
-                  <Label htmlFor="terms" className="text-sm">
-                    Concordo com os{" "}
-                    <Link href="#" className="text-blue-600 hover:text-blue-800">
-                      Termos de Serviço
-                    </Link>{" "}
-                    e{" "}
-                    <Link href="#" className="text-blue-600 hover:text-blue-800">
-                      Política de Privacidade
-                    </Link>
-                  </Label>
-                </div>
+               
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
@@ -230,7 +204,7 @@ export default function RegisterPage() {
           <CardFooter className="flex justify-center">
             <div className="text-center text-sm text-gray-600">
               Já tem uma conta?{" "}
-              <Link href="/login" className="text-blue-600 hover:text-blue-800 font-medium">
+              <Link href="/login" className="text-emerald-600 hover:text-emerald-800 font-medium">
                 Faça login
               </Link>
             </div>

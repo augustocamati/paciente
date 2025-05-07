@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Search, Plus, Trash, Trash2 } from "lucide-react"
+import { Search, Plus } from "lucide-react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { randomInt } from "crypto"
@@ -20,7 +20,7 @@ export default function PatientList({
   selectedPatientId,
 }: PatientListProps) {
   const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3002"
-
+  
   const [searchTerm, setSearchTerm] = useState("")
   const [patients, setPatients] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -33,11 +33,14 @@ export default function PatientList({
     room: "",
     medicalRecord: "",
   })
+   
+
+  
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await fetch(`${API_URL}/patients`)
+         const response = await fetch(`${API_URL}/patients`)
         if (!response.ok) throw new Error("Erro ao carregar pacientes")
         const data = await response.json()
         setPatients(data)
@@ -52,7 +55,7 @@ export default function PatientList({
 
   const handleCreatePatient = async () => {
     try {
-      const response = await fetch(`${API_URL}/patients`, {
+     const response = await fetch(`${API_URL}/patients`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -61,11 +64,11 @@ export default function PatientList({
           ...newPatient,
           age: parseInt(newPatient.age),
           status: "STABLE",
-
+    
           doctorId: 2, // ID do médico associado (ajuste conforme necessário)
         }),
       })
-      console.log("response", response)
+console.log('response', response)
       if (!response.ok) throw new Error("Erro ao criar paciente")
       const result = await response.json()
       setPatients([...patients, result])
@@ -81,34 +84,6 @@ export default function PatientList({
       console.error("Erro:", error)
     }
   }
-
-  async function handleDeletePatient(id: any): Promise<void> {
-    if (confirm("Tem certeza de que deseja excluir este paciente?")) {
-      console.log('id', id)
-      try {
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/patients/${id}`,
-          {
-            method: "DELETE",
-          }
-        )
-
-        if (!response.ok) {
-          throw new Error(`Erro ao excluir paciente: ${response.statusText}`)
-        }
-
-       
-        // Aqui você pode adicionar lógica para atualizar a interface, como redirecionar ou remover o paciente da lista
-        setPatients((prev) => prev.filter((patient) => patient.id !== id));
-        console.log("Paciente excluído com sucesso")
-        alert("Paciente excluído com sucesso")
-      } catch (error) {
-        console.error("Erro ao excluir paciente:", error)
-       
-      }
-    }
-  }
- 
 
   const filteredPatients = patients.filter(
     (patient) =>
@@ -182,7 +157,7 @@ export default function PatientList({
                 setNewPatient({ ...newPatient, age: e.target.value })
               }
             />
-
+           
             <select
               className="w-full px-3 py-2 border rounded-md"
               value={newPatient.gender}
@@ -192,6 +167,7 @@ export default function PatientList({
             >
               <option value="MALE">Masculino</option>
               <option value="FEMALE">Feminino</option>
+              
             </select>
             <Input
               placeholder="Quarto"
@@ -231,14 +207,14 @@ export default function PatientList({
                 key={patient.id}
                 className={`p-3 rounded-lg cursor-pointer transition-colors ${
                   selectedPatientId === patient.id
-                    ? "bg-emerald-100 border border-emerald-300"
+                    ? "bg-blue-100 border border-blue-300"
                     : "hover:bg-gray-100 border border-transparent"
                 }`}
                 onClick={() => onSelectPatient(patient)}
               >
                 <div className="flex items-center gap-3">
                   <Avatar>
-                    <AvatarFallback className="bg-emerald-200 text-emerald-700">
+                    <AvatarFallback className="bg-blue-200 text-blue-700">
                       {patient.name
                         .split(" ")
                         .map((n) => n[0])
@@ -248,15 +224,9 @@ export default function PatientList({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
                       <p className="font-medium truncate">{patient.name}</p>
-                       
-                        <Button
-                          size="sm"
-                          variant="ghost"
-                          className="text-red-500 hover:text-red-600 ml-2"
-                          onClick={(e) => handleDeletePatient( patient.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
+                      {/* <Badge className={getStatusColor(patient.status)}>
+                        {getStatusText(patient.status)}
+                      </Badge> */}
                     </div>
                     <div className="flex items-center text-sm text-muted-foreground mt-1">
                       <span className="truncate">

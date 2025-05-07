@@ -45,23 +45,23 @@ export default function LoginPage() {
           ? { email: formData.email, password: formData.password }
           : { medicalRecord: formData.medicalRecord, password: formData.patientPassword }
 
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
+      // const response = await fetch(endpoint, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(payload),
+      // })
 
-      const data = await response.json()
+      // const data = await response.json()
 
-      if (!response.ok) {
-        throw new Error(data.message || "Erro ao fazer login")
-      }
+      // if (!response.ok) {
+      //   throw new Error(data.message || "Erro ao fazer login")
+      // }
 
       // Armazenar token e redirecionar
-      localStorage.setItem("authToken", data.token)
-      localStorage.setItem("userType", userType)
+      // localStorage.setItem("authToken", data.token)
+      // localStorage.setItem("userType", userType)
 
       toast({
         title: "Login realizado com sucesso",
@@ -87,9 +87,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-indigo-100 flex flex-col">
       <div className="container mx-auto px-4 py-4">
-        <Link href="/" className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors">
+        <Link href="/" className="inline-flex items-center text-emerald-600 hover:text-emerald-800 transition-colors">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Voltar para a página inicial
         </Link>
@@ -99,7 +99,7 @@ export default function LoginPage() {
         <Card className="w-full max-w-md">
           <CardHeader className="space-y-1 text-center">
             <div className="flex justify-center mb-2">
-              <div className="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
+              <div className="w-12 h-12 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
                 MC
               </div>
             </div>
@@ -128,7 +128,7 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Senha</Label>
-                      <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
+                      <Link href="/forgot-password" className="text-sm text-emerald-600 hover:text-emerald-800">
                         Esqueceu a senha?
                       </Link>
                     </div>
@@ -161,7 +161,7 @@ export default function LoginPage() {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="patientPassword">Senha</Label>
-                      <Link href="/forgot-password" className="text-sm text-blue-600 hover:text-blue-800">
+                      <Link href="/forgot-password" className="text-sm text-emerald-600 hover:text-emerald-800">
                         Esqueceu a senha?
                       </Link>
                     </div>
@@ -192,7 +192,7 @@ export default function LoginPage() {
               {userType === "doctor" ? (
                 <>
                   Não tem uma conta?{" "}
-                  <Link href="/register" className="text-blue-600 hover:text-blue-800 font-medium">
+                  <Link href="/register" className="text-emerald-600 hover:text-emerald-800 font-medium">
                     Cadastre-se como médico
                   </Link>
                 </>

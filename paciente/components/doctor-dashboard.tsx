@@ -29,11 +29,11 @@ export default function DoctorDashboard() {
   const [selectedPatient, setSelectedPatient] = useState<any>(null)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <header className="bg-white border-b shadow-sm">
         <div className="container mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center text-white font-bold">
+            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold">
               PM
             </div>
             <h1 className="text-xl font-bold text-gray-800">MediMonitor</h1>

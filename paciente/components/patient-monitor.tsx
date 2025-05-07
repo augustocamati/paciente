@@ -4,14 +4,7 @@ import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
-import {
-  Activity,
-  Thermometer,
-  Droplet,
-  AlertTriangle,
-  History,
-  Settings,
-} from "lucide-react"
+import { Activity, Thermometer, Droplet, AlertTriangle, History, Settings } from "lucide-react"
 import {
   Dialog,
   DialogContent,
@@ -32,8 +25,7 @@ const getRandomValue = (min: number, max: number) => {
 }
 
 interface PatientMonitorProps {
-  patient: any;
-
+  patient: any
 }
 
 export default function PatientMonitor({ patient }: PatientMonitorProps) {
@@ -59,7 +51,7 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
       )
       const data = await response.json()
       console.log("data[0]", data[0])
-      setHistory(data)
+setHistory(data)
       data[0]
         ? setVitals(data[0])
         : setVitals({
@@ -152,7 +144,7 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
           ? "bg-gradient-to-br from-amber-50 to-amber-100 border-amber-200"
           : value > thresholds.spo2.max
           ? "bg-gradient-to-br from-red-50 to-red-100 border-red-200"
-          : "bg-gradient-to-br from-emerald-50 to-emerald-100 border-emerald-200"
+          : "bg-gradient-to-br from-blue-50 to-blue-100 border-blue-200"
       case "bpm":
         return value < thresholds.bpm.min
           ? "bg-gradient-to-br from-yellow-50 to-yellow-100 border-yellow-200"
@@ -211,17 +203,17 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
       if (!response.ok) {
         throw new Error(`Failed to save thresholds: ${response.statusText}`)
       }
-      toast.success("Limites salvos com sucesso!")
-
+     toast.success("Limites salvos com sucesso!")
+    
       console.log("Thresholds successfully saved to the API.")
     } catch (error) {
       console.error("Error saving thresholds to the API:", error)
     }
   }
 
-
   return (
     <div className="space-y-6">
+      
       <Card>
         <CardHeader className="pb-3">
           <div className="flex items-center justify-between">
@@ -260,7 +252,11 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
                   />
                 </DialogContent>
               </Dialog>
-               
+
+              <Button variant="outline" size="sm">
+                <History className="h-4 w-4 mr-2" />
+                Histórico
+              </Button>
             </div>
           </div>
         </CardHeader>
@@ -296,7 +292,7 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
                   Saturação de Oxigênio
                 </CardTitle>
                 <div className="p-2 bg-white rounded-full shadow-sm">
-                  <Droplet className="h-5 w-5 text-emerald-600" />
+                  <Droplet className="h-5 w-5 text-blue-600" />
                 </div>
               </CardHeader>
               <CardContent>
@@ -433,9 +429,9 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
             <CardContent className="pt-6">
               {history.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="table-auto w-full border-collapse border border-emerald-300">
+                  <table className="table-auto w-full border-collapse border border-gray-300">
                     <thead>
-                      <tr className="bg-emerald-100">
+                      <tr className="bg-gray-100">
                         <th className="border border-gray-300 px-4 py-2 text-left">
                           Data/Hora
                         </th>
@@ -455,7 +451,7 @@ export default function PatientMonitor({ patient }: PatientMonitorProps) {
                         <tr
                           key={index}
                           className={
-                            index % 2 === 0 ? "bg-white" : "bg-emerald-50"
+                            index % 2 === 0 ? "bg-white" : "bg-gray-50"
                           }
                         >
                           <td className="border border-gray-300 px-4 py-2">
